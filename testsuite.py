@@ -1,4 +1,3 @@
-from email.mime import base
 import subprocess
 import threading
 import yaml
