@@ -1,4 +1,4 @@
-# TestMaster
+# 🧪 TestMaster
 My personnal master testsuite in python, only for fonctionnal tests.
 ## Small setup
 Use python3.  
