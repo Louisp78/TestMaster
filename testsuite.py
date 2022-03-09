@@ -47,17 +47,20 @@ try:
             print (help_msg)
             stop = True
 
-        if currentArgument in ("-v", "--verbose"):
+        elif currentArgument in ("-v", "--verbose"):
             print (Bcolors.WARNING + Bcolors.BOLD + "[VERBOSE] " + Bcolors.ENDC + "Enabling verbose mode !\n")
             verbose = True
 
-        if currentArgument in ("-t", "--timeout"):
+        elif currentArgument in ("-t", "--timeout"):
             print ((Bcolors.WARNING + Bcolors.BOLD + "[TIMEOUT] " + Bcolors.ENDC + "Enabling timeout of %r seconds\n") % (currentValue))
             timeout = int(currentValue)
 
-        if currentArgument in ("--suite", "-s"):
+        elif currentArgument in ("--suite", "-s"):
             print ((Bcolors.WARNING + Bcolors.BOLD + "[SUITE] " + Bcolors.ENDC + "Running only %r suite. \n") % (currentValue))
-            run_custom_testsuite = currentValue
+            if run_custom_testsuite == None:
+                run_custom_testsuite = [currentValue]
+            else:
+                run_custom_testsuite.append(currentValue)
 
 except getopt.error as err:
     print (str(err))
@@ -75,7 +78,7 @@ if not stop:
     total_tests = 0
     for map in list_map:
         testsuite = from_dict(data_class=Testsuite, data=map)
-        if run_custom_testsuite != None and testsuite.name == run_custom_testsuite:
+        if run_custom_testsuite != None and testsuite.name in run_custom_testsuite:
             (is_ok, nb_ok_tests) = testsuite.run(verbose, timeout)
         elif run_custom_testsuite == None:
             (is_ok, nb_ok_tests) = testsuite.run(verbose, timeout)
