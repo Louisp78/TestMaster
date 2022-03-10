@@ -5,8 +5,8 @@ Use python3.
 Install all modules with:  
 ```pip install -r requirements.txt```  
   
-To add tests use ```tests.yaml``` file. Find the synthax in wiki.
-Example of ```tests.yaml``` file:
+To add tests use `tests.yaml` file. Find the synthax in wiki.
+Example of `tests.yaml` file:
 ``` yaml
 - name: "Basic echo tests"
   baseInput: "echo"
@@ -23,7 +23,7 @@ Example of ```tests.yaml``` file:
   tests_from_folder: "./tests/"
 ```
  
-testsuite.py can take arguments. To see all available argument got to wiki or :
+`testsuite.py` can take arguments. To see all available argument got to wiki or :
 ``` python3 testsuite.py --help ```
   
 Enjoy !  
