@@ -3,7 +3,9 @@ My personnal master testsuite in python, only for fonctionnal tests.
 ## Small setup
 Use python3.  
 Install all modules with:  
-```pip install -r requirements.txt```  
+```console
+pip install -r requirements.txt
+```  
   
 To add tests use `tests.yaml` file. Find the synthax in wiki.
 Example of `tests.yaml` file:
@@ -24,7 +26,9 @@ Example of `tests.yaml` file:
 ```
  
 `testsuite.py` can take arguments. To see all available argument got to wiki or :   
-``` python3 testsuite.py --help ```
+```console
+python3 testsuite.py --help 
+```
   
 Enjoy !  
   
