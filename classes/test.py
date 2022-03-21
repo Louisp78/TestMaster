@@ -49,6 +49,7 @@ class Test():
         # In case of verbose mode display command 
         if verbose:
             self.print += Bcolors.WARNING + "\t\t [VERBOSE] cmd: '" + baseInput + " " + self.input + "'" + Bcolors.ENDC + '\n'
+            self.print += Bcolors.WARNING + "\t\t [VERBOSE] output :\n " + Bcolors.ENDC + cmd.stdout.decode("utf-8")
         # ===
 
         return test_ok
