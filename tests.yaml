@@ -4,6 +4,11 @@
     - name: "hello_test"
       input: "hello"
       exp_out: "hello\n"
+
+    - name: "hello_test with file exp_out"
+      input: "hello"
+      exp_out_file: "tests/exp_hello.txt"
+
     - name: "good_test"
       input: "good"
       exp_out: "good\n"

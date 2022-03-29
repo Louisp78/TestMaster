@@ -8,6 +8,7 @@ class Test():
     name: str
     input: str
     exp_out: str = None
+    exp_out_file: str = None
     exp_err: str = None
     exp_errcode: int = None
     print: str = None
@@ -22,12 +23,15 @@ class Test():
     def run(self, baseInput="", verbose=False, timeout=0.5) -> bool:
         # Run command
         cmd = Command(baseInput + " " + self.input)
-        cmd.run(timeout)  # TODO timeout set here
+        cmd.run(timeout) 
         # ===
 
         result_error = '\t' + Bcolors.BOLD + Bcolors.FAIL + "[KO] " + Bcolors.WARNING + "case : %r\n" % (self.name) + Bcolors.ENDC + '\t'
         test_ok = True
         # Display result from result of execution of command
+        if self.exp_out_file != None:
+            f = open(self.exp_out_file, "r")
+            self.exp_out = f.read()
         if self.exp_out != None:
             res = ''.join(str(child) for child in (difflib.unified_diff(cmd.stdout.decode("utf-8"), self.exp_out, lineterm="\n\t")))
             result_error += res
