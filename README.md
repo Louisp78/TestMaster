@@ -25,7 +25,7 @@ Example of `tests.yaml` file:
   tests_from_folder: "./tests/"
 ```
  
-`testsuite.py` can take arguments. To see all available argument got to wiki or :   
+`testsuite.py` can take arguments. To see all available arguments got to wiki or :   
 ```console
 python3 testsuite.py --help 
 ```
