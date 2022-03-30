@@ -3,12 +3,25 @@ from .bcolors import Bcolors
 from .command import Command
 import difflib
 
+def _unidiff_output(expected, actual):
+    """
+    Helper function. Returns a string containing the unified diff of two multiline strings.
+    """
+
+    expected=expected.splitlines(keepends=True)
+    actual=actual.splitlines(keepends=True)
+
+    diff=difflib.unified_diff(expected, actual)
+
+    return ''.join(diff)
+
 @dataclass
 class Test():
     name: str
     input: str
     exp_out: str = None
     exp_out_file: str = None
+    exp_err_file: str = None
     exp_err: str = None
     exp_errcode: int = None
     print: str = None
@@ -29,17 +42,23 @@ class Test():
         result_error = '\t' + Bcolors.BOLD + Bcolors.FAIL + "[KO] " + Bcolors.WARNING + "case : %r\n" % (self.name) + Bcolors.ENDC + '\t'
         test_ok = True
         # Display result from result of execution of command
-        if self.exp_out_file != None:
-            f = open(self.exp_out_file, "r")
-            self.exp_out = f.read()
-        if self.exp_out != None:
-            res = ''.join(str(child) for child in (difflib.unified_diff(cmd.stdout.decode("utf-8"), self.exp_out, lineterm="\n\t")))
+
+        if self.exp_out != None or self.exp_out_file != None:
+            out = cmd.stdout.decode("utf-8")
+            if self.exp_out_file != None:
+                file = open(self.exp_out_file, "r")
+                self.exp_out = file.read()
+            res = _unidiff_output(self.exp_out, out)
             result_error += res
-            test_ok = "@" not in res
-        if self.exp_err != None:
-            res = ''.join(str(child) for child in (difflib.unified_diff(cmd.stderr.decode("utf-8"), self.exp_err, lineterm="\n\t")))
+            test_ok = res == ""
+        if self.exp_err != None or self.exp_err_file != None:
+            err = cmd.stderr.decode("utf-8")
+            if self.exp_err_file != None:
+                file = open(self.exp_err_file, "r")
+                self.exp_err = file.read()
+            res = _unidiff_output(self.exp_err, err)
             result_error += res
-            test_ok = "@" not in res
+            test_ok = res == ""
         if self.exp_errcode != None:
             if self.exp_errcode != cmd.process.returncode:
                 test_ok = False

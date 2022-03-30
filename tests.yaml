@@ -16,3 +16,11 @@
 - name: "Basic cat from files"
   baseInput: "cat"
   tests_from_folder: "./tests/"
+
+- name: "Error from cat"
+  baseInput: ""
+  tests:
+    - name: "Cat error"
+      input: "cat -ere"
+      exp_err_file: "tests/exp_err.txt"
+      exp_errcode: 1
