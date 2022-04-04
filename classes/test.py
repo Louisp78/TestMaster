@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from .bcolors import Bcolors
 from .command import Command
 import difflib
+import re
 
 def _unidiff_output(expected, actual):
     """
@@ -22,6 +23,7 @@ class Test():
     exp_out: str = None
     exp_out_file: str = None
     exp_err_file: str = None
+    exp_err_regex: str = None
     exp_err: str = None
     exp_errcode: int = None
     print: str = None
@@ -51,14 +53,28 @@ class Test():
             res = _unidiff_output(self.exp_out, out)
             result_error += res
             test_ok = res == ""
-        if self.exp_err != None or self.exp_err_file != None:
+        if self.exp_err != None or self.exp_err_file != None or self.exp_err_regex != None:
             err = cmd.stderr.decode("utf-8")
-            if self.exp_err_file != None:
-                file = open(self.exp_err_file, "r")
-                self.exp_err = file.read()
-            res = _unidiff_output(self.exp_err, err)
-            result_error += res
-            test_ok = res == ""
+            
+            if self.exp_err != None:
+
+                if self.exp_err_file != None:
+                    file = open(self.exp_err_file, "r")
+                    self.exp_err = file.read()
+            
+                res = _unidiff_output(self.exp_err, err)
+                result_error += res
+                test_ok = res == ""
+
+            elif self.exp_err_regex != None:
+                reg_matcher = re.compile(self.exp_err_regex)
+                mo = reg_matcher.search(err)
+                res = ""
+                if mo is None:
+                    res += "Error message not matching provided regex"
+                    test_ok = False
+                result_error += res
+
         if self.exp_errcode != None:
             if self.exp_errcode != cmd.process.returncode:
                 test_ok = False
