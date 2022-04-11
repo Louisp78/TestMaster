@@ -3,6 +3,7 @@ from .bcolors import Bcolors
 from .command import Command
 import difflib
 import re
+from os import path
 
 def _unidiff_output(expected, actual):
     """
@@ -26,6 +27,7 @@ class Test():
     exp_err_regex: str = None
     exp_err: str = None
     exp_errcode: int = None
+    from_folder: bool = False
     print: str = None
 
     def __repr__(self) -> str:
@@ -40,6 +42,12 @@ class Test():
         cmd = Command(baseInput + " " + self.input)
         cmd.run(timeout) 
         # ===
+
+        # if a "exp_out" is in the path tests out from this folder
+        if self.from_folder and self.input.rfind('/') != -1:
+            path_to_exp_file = self.input[0:self.input.rfind('/'):] + "/exp_out/" + self.input[self.input.rfind('/') + 1:]
+            if path.exists(path_to_exp_file):
+                self.exp_out_file = path_to_exp_file
 
         result_error = '\t' + Bcolors.BOLD + Bcolors.FAIL + "[KO] " + Bcolors.WARNING + "case : %r\n" % (self.name) + Bcolors.ENDC + '\t'
         test_ok = True

@@ -28,7 +28,7 @@ class Testsuite:
             filenames = next(walk(self.tests_from_folder), (None, None, []))[2]
             tests = []
             for file in filenames:
-                tests.append(Test(name=file, input=self.tests_from_folder + file, exp_errcode=0))
+                tests.append(Test(name=file, input=self.tests_from_folder + file, exp_errcode=0, from_folder=True))
             self.tests = tests
         # ===
 
