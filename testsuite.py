@@ -25,11 +25,12 @@ def pretty_print():
 pretty_print()
 
 argumentList = sys.argv[1:]
-options = "hvt:s:"
-long_options = ["help", "verbose", "timeout=", "suite="]
+options = "hvet:s:"
+long_options = ["help", "verbose", "timeout=", "suite=", "auto-exp"]
 stop = False
 timeout = 0.5
 verbose = False
+auto_exp = False
 run_custom_testsuite = None
 try:
 
@@ -42,6 +43,7 @@ try:
             -v or --verbose : Activate verbose mode to show commands executed
             -t <timeout in seconds> : Use a timeout of x seconds during tests
             -s <name of testsuite> or --suite <name of testsuite> : Run only the specified testsuite
+            -e or --auto-exp : Run tests with tests_from_folder and auto-generate expected output from exp_out folder in the path
             -h or --help : For help
             """
             print (help_msg)
@@ -50,6 +52,10 @@ try:
         elif currentArgument in ("-v", "--verbose"):
             print (Bcolors.WARNING + Bcolors.BOLD + "[VERBOSE] " + Bcolors.ENDC + "Enabling verbose mode !\n")
             verbose = True
+
+        elif currentArgument in ("-e", "--auto-exp"):
+            print (Bcolors.WARNING + Bcolors.BOLD + "[VERBOSE] " + Bcolors.ENDC + "Enabling auto-exp mode !\n")
+            auto_exp = True
 
         elif currentArgument in ("-t", "--timeout"):
             print ((Bcolors.WARNING + Bcolors.BOLD + "[TIMEOUT] " + Bcolors.ENDC + "Enabling timeout of %r seconds\n") % (currentValue))
@@ -79,9 +85,9 @@ if not stop:
     for map in list_map:
         testsuite = from_dict(data_class=Testsuite, data=map)
         if run_custom_testsuite != None and testsuite.name in run_custom_testsuite:
-            (is_ok, nb_ok_tests) = testsuite.run(verbose, timeout)
+            (is_ok, nb_ok_tests) = testsuite.run(verbose, timeout, auto_exp)
         elif run_custom_testsuite == None:
-            (is_ok, nb_ok_tests) = testsuite.run(verbose, timeout)
+            (is_ok, nb_ok_tests) = testsuite.run(verbose, timeout, auto_exp)
         else:
             continue
         list.append(testsuite)

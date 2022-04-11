@@ -18,7 +18,7 @@ class Testsuite:
 
     # Run testsuite all subtests of it
     # Print result in stdout
-    def run(self, verbose=False, timeout=0.5):
+    def run(self, verbose=False, timeout=0.5, auto_exp=False):
 
         # In case of auto-generated tests from a folder specified
         if self.tests == None:
@@ -35,7 +35,7 @@ class Testsuite:
         nb_test_ok = 0
         # Run all subtests
         for test in self.tests:
-            if test.run(self.baseInput, verbose, timeout):
+            if test.run(self.baseInput, verbose, timeout, auto_exp):
                 nb_test_ok += 1
         # ===
 

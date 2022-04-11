@@ -37,14 +37,14 @@ class Test():
                                                                                             self.exp_err,
                                                                                             self.exp_errcode)
 
-    def run(self, baseInput="", verbose=False, timeout=0.5) -> bool:
+    def run(self, baseInput="", verbose=False, timeout=0.5, auto_exp=False) -> bool:
         # Run command
         cmd = Command(baseInput + " " + self.input)
         cmd.run(timeout) 
         # ===
 
         # if a "exp_out" is in the path tests out from this folder
-        if self.from_folder and self.input.rfind('/') != -1:
+        if auto_exp and self.from_folder and self.input.rfind('/') != -1:
             path_to_exp_file = self.input[0:self.input.rfind('/'):] + "/exp_out/" + self.input[self.input.rfind('/') + 1:]
             if path.exists(path_to_exp_file):
                 self.exp_out_file = path_to_exp_file
